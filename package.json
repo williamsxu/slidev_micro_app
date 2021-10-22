@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build --base /slidev_FE_project_roads/",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.25.4",
+    "@slidev/theme-default": "*",
+    "@slidev/theme-seriph": "*",
+    "playwright": "^1.12.1"
+  },
+  "name": "slidev",
+  "devDependencies": {
+    "playwright-chromium": "^1.12.1",
+    "vite-plugin-remote-assets": "^0.2.2"
+  }
+}

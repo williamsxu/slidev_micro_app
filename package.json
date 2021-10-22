@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "slidev --open",
-    "build": "slidev build --base /slidev_FE_project_roads/",
+    "build": "slidev build --base /slidev_an_incomplete_guide_to_the_javascript_jquery_version/",
     "export": "slidev export"
   },
   "dependencies": {

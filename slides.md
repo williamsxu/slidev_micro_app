@@ -53,6 +53,23 @@ layout: 'intro'
 
 ---
 
+# 注意
+
+<div class="inline-flex mt-45 ml-70">请注意这个标记：<Dog class="mr-1.5"/></div>
+
+<style>
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-text-fill-color: transparent;
+}
+</style>
+---
+
 # 使用单引号
 
 <div class="inline-flex"><Dog class="mr-1.5"/>尽量不要简化符号，双引号越多越好。</div>

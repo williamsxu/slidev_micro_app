@@ -22,8 +22,8 @@
         stroke-width="4"
         stroke-linecap="round"
         stroke-linejoin="round"
-      /></svg
-    ><span class="leading-tight ml-1">推荐</span>
+      />
+    </svg>
   </div>
 </template>
 

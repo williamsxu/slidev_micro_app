@@ -12,6 +12,10 @@ highlighter: shiki
 # some information about the slides, markdown enabled
 download: true
 layout: cover
+fonts:
+  sans: 'Helvetica Neue,Robot'
+  local: 'Helvetica Neue'
+  italic: true
 
 info: |
   ## About
@@ -20,20 +24,17 @@ info: |
 
 ---
 
-# JavaScript编码不完全指南
+<span class="text-teal-600 text-6xl ">如何瓦解巨石应用</span>
 
--- 怎样写出难以维护的JavaScript（jQuery）代码
+<span class="text-teal-300 text-2xl ">-- 微前端的实现思路及应用</span>
 
 
 <div class="pt-12">
-  <span class="px-2 p-1">
+  <span class="text-teal-200 px-2 p-1">
   蜂泰科技  |  徐 健
   </span>
 </div>
 
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
 
 ---
 layout: 'intro'
@@ -53,714 +54,349 @@ layout: 'intro'
 
 ---
 
-# 注意
+# 目录
 
-<div class="inline-flex mt-45 ml-70">请注意这个标记：<Dog class="mr-1.5"/></div>
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 使用单引号
-
-<div class="inline-flex"><Dog class="mr-1.5"/>尽量不要简化符号，双引号越多越好。</div>
-
-<br>
-<br>
-
-<BadTag />
-
-```js
-$("div").html("<img src='1.jpg'>");
-```
-
-<br>
-<GoodTag />
-
-```js
-$('div').html('<img src="1.jpg">');
-```
-
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 变量
-> 变量命名
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>jQuery对象不要用$变量表示，这样就可以无法明确变量含义了。</div>
-
-<br>
-<br>
-
-<BadTag />
-
-```js
-const sidebar = $('.sidebar');
-```
-<br>
-<GoodTag />
-
-```js
-const $sidebar = $('.sidebar');
-```
-
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 变量
-> 缓存变量
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>虽然DOM 遍历是昂贵的，但是现在计算资源过剩，无需将会重用的元素缓存。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-var $element = $('#element'),
-    h = $element.height();
-$element.css('height', h - 20);
-```
-<br>
-
-<GoodTag />
-
-```js
-var h = $('#element').height();
-$('#element').css('height', h - 20);
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 变量
-> 全局变量
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>jquery 与 javascript 一样，你的变量可以随便全局定义，这样可以随便在函数作用域外使用。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-$element = $('#element');
-h = $element.height();
-$element.css('height',h - 20);
-```
-<br>
-
-<GoodTag />
-
-```js
-var $element = $('#element'),
-    h = $element.height();
-$element.css('height',h - 20);
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 选择器
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>ID选择器可用时无所谓用不用,虽然我们知道它在内部使用document.getElementById()。</div>
-
-<br>
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>当使用类/伪类选择器时，上手就是直接写类名，给选择器附上元素类型来避免扫描整个DOM树不存在。</div>
-<br>
-<br>
-<BadTag />
-
-```js
-// 在整个DOM树中扫描"products"类名
-var $products = $(".products");
-```
-<br>
-
-<GoodTag />
-
-```js
-// 只在DIV元素中扫描"products"类名
-var $products = $("div.products");
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 选择器
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>在ID > 子节点层级选择器中使用find()方法无所谓的。前半部分选择器没使用到Sizzle选择器引擎来查找元素也没太多影响。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-// Sizzle选择器引擎查找层级
-var $productIds = $("#products div.id");
-```
-<br>
-
-<GoodTag />
-
-```js
-// 只有div.id走Sizzle选择器引擎
-var $productIds = $("#products").find("div.id");
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 选择器
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>层级再多也不怕，总有能扫描到的时候。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-// 要扫描整个DOM树寻找
-$('.class');
-```
-<br>
-
-<GoodTag />
-
-```js
-// 只在#class-container里扫描
-$('.class', '#class-container');
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 使用 on 来处理事件
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>自从 jquery 1.7 版本后，on() 是附加事件处理程序的首选方法。不必为了一致性考虑统一调用风格。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-$first.click(function(){
-    $first.css('border', '1px solid red');
-    $first.css('color', 'blue');
-});
-$first.hover(function(){
-    $first.css('border', '1px solid red');
-});
-```
-<br>
-
-<GoodTag />
-
-```js
-$first.on('click', function(){
-    $first.css('border', '1px solid red');
-    $first.css('color', 'blue');
-});
-$first.on('hover', function(){
-    $first.css('border', '1px solid red');
-});
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 行内JS
-
 <br>
-<div class="inline-flex"><Dog class="mr-1.5"/>可以为了方便在HTML文件里添加行为（行内JS），虽然这是调试的噩梦, 而且始终使用jQuery绑定事件后面会很容易去解绑事件。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-<a id="myLink" href="#" onclick="myEventHandler();">my link</a>
-```
-<br>
-
-<GoodTag />
-
-```js
-$("#myLink").on("click", myEventHandler); 
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 对事件使用自定义命名空间
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>事件名称写得一摸一样，可以增加复制粘贴的速度。虽然自定义命名空间有利于去解绑某DOM元素上特定的事件而不会影响到该DOM元素上的其他事件。</div>
-
-<br>
-<br>
-
-<GoodTag />
-
-```js
-$("#myLink").on("click.mySpecialClick", myEventHandler); // GOOD
-// 后面会很容易的解绑这个特定的点击事件
-$("#myLink").unbind("click.mySpecialClick");
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 精简 jquery
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>一般来说，最好尽可能合并属性。但不合并毕竟这样会显得代码很多不是么。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-$first.click(function(){
-    $first.css('border', '1px solid red');
-    $first.css('color', 'blue');
-});
-```
-<br>
-
-<GoodTag />
-
-```js
-$first.on('click', function(){
-    $first.css({
-        'border':'1px solid red',
-        'color':'blue'
-    });
-});
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 操作
-> 链式操作
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>jQuery链式操作可能显得太简洁，毕竟还少写了不少代码。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-$second.html(value);
-$second.on('click', function(){
-    alert('hello everybody');
-});
-$second.fadeIn('slow');
-$second.animate({height: '120px'}, 500);
-```
-<br>
-
-<GoodTag />
-
-```js
-$second.html(value).on('click', function(){
-    alert('hello everybody');
-}).fadeIn('slow').animate({height: '120px'}, 500);
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
-
----
-
-# Ajax
-
-<div class="inline-flex"><Dog class="mr-1.5"/>不必避免使用.getJSON()和.get()，只使用$.ajax()。【前两者都是在内部使用的后者。】</div>
-<br>
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>直接把请求参数放在URL里，不用放在data对象里去。</div>
-<br>
-<br>
-<BadTag />
-
-```js
-$.ajax({
-    url: "something.com?param1=test1&param2=test2",
-    ....
-});
-```
 <br>
-
-<GoodTag />
-
-```js
-$.ajax({
-    url: "something.com",
-    data: { param1: test1, param2: test2 }
-});
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# Ajax
-
-<div class="inline-flex"><Dog class="mr-1.5"/>不必明确设置数据的类型dataType，虽然这样很容易知道当前正在处理什么样的数据。</div>
-<br>
-<br>
-
-<GoodTag />
-
-```js
-var jqxhr = $.ajax({
-  url: url,
-  type: "GET",      // 默认值GET，可根据需要配置
-  cache: true,      // 默认值true, dataType是'script'或'jsonp'时为false，可根据需要配置
-  data: {},         // 请求参数对象
-  dataType: "json", // 设置数据类型
-  jsonp: "callback",// 只在操作JSONP时设置此项
-  statusCode: {     // 针对特定错误码的回调处理函数
-    404: handler404,
-    500: handler500
-  }
-});
-jqxhr.done(successHandler);
-jqxhr.fail(failureHandler);
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
----
-
-# 可读性
-> 维持代码的可读性
-
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>链式代码够精简了，要是不能读懂代码不关我事。</div>
-
-<br>
-<br>
-<BadTag />
-
-```js
-$second.html(value).on('click', function(){
-    alert('hello everybody');
-}).fadeIn('slow').animate({height: '120px'}, 500);
-```
-<br>
-
-<GoodTag />
-
-```js
-$second.html(value)
-    .on('click', function() {
-        alert('hello everybody');
-    })
-    .fadeIn('slow')
-    .animate({
-        height: '120px'
-    }, 500);
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
-
----
-
-# 更新
-
 <br>
-<div class="inline-flex"><Dog class="mr-1.5"/>现有版本能用就行，升不升级新版本无所谓。</div>
-
-<br>
-<br>
-<div class="inline-flex"><Dog class="mr-1.5"/>不用关注每个新版本的废弃方法，又不是不能用。</div>
-<br>
-<br>
-<BadTag />
-
-```js
-$('#stuff').on('click', function() {
-    console.log('hooray');
-});
-```
-<br>
-
-<GoodTag />
-
-```js
-$second.html(value)
-    .on('click', function() {
-        alert('hello everybody');
-    })
-    .fadeIn('slow')
-    .animate({
-        height: '120px'
-    }, 500);
-```
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
-
----
-
-# CDN
-
-<div class="inline-flex mt-40"><Dog class="mr-1.5"/>虽然jQuery 官网提供了 CDN，但无需考虑利用它保证选择离用户最近的缓存并迅速响应。</div>
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
-</style>
-
----
-
-# 做个小结
-> 来！该做个小结了！
-
-<div grid="~ cols-2 gap-4">
-  <div>
-    <br>
-
-* jQuery对操作DOM有一定的要求；
-
-<br>
-
-- 小结一下:
-1. 选择节点范围能小则小；
-2. 能重用资源越多越好；
-3. 注意事件的解耦;
-
-  </div>
-  
-  <div>
-    <br>
-
-* 现代框架对jQuery造成了冲击；
-
 <br>
 
-- 特点:
-1. React 、Vue 、Angular框架，都是属于MV*框架的范畴，其设计特点，主要是以数据为核心；
-2. 比传统jQuery开发效率高，代码可维护性高，可扩展性强、性能好；
+<div class="grid grid-cols-2 gap-x-4 mt-10"><div>
 
+- ## 背景
+- ## 解决方案对比
+- ## 微前端优势
+- ## 微前端核心设计理念
 </div>
+
 <div>
 
+- ## 微前端技术选型
+- ## 统一后台整体方案
+- ## Q&A
+
+
+</div></div>
+
+---
+
+# 背景
+> 脱离实际使用场景的技术改造没有太大价值并且很难走远。
+
+
+<div class="grid grid-cols-2 gap-x-4 mt-10"><div>
+
+## 现状
+<br>
+
+* 技术债务：技术栈陈旧不堪，腐化速度越来越快；
+* 耦合性高：多个业务团队同时维护一个巨石应用；
+* 管理效率低：多个应用入口分散，权限分散；
 
 </div>
+
+<div>
+
+## 痛点
+<br>
+
+* 开发、测试、部署、维护等环节繁琐，效率低；
+* 改动成本高，出错率上升；
+* 重复建设，造成资源浪费；
+* 缺乏统一管理，使用成本上升；
+
+
+</div></div>
+
+
+---
+
+# 解决方案对比
+> 到了项目后期，怎么优化都不如进行项目拆分。
+
+<div class="leading-6">
+
+| 方案  | 描述  | 优点  | 缺点  |
+|:---:|:---|:---|:---|
+| <span class="title">Nginx路由转发</span>  |  通过Nginx配置反向代理来实现不同路径映射到不同应用  |  简单、快速   |   在切换应用时会触发浏览器刷新，影响体验，配置繁复  |
+| <span class="title">iframe嵌套</span>   |  每个子应用嵌套一个iframe   |  实现简单，子应用之间天然隔离互不影响   |  iframe的样式显示、兼容性等都具有局限性   |
+| <span class="title">Web Components</span>   |  采用纯Web Components技术编写组件   | 每个子应用拥有独立的script和css，可单独部署    |  对于历史系统改造成本高，子应用通信较为复杂易踩坑   |
+| <span class="title">组合式应用路由分发</span>   |  每个子应用独立构建和部署，运行时由父应用来进行路由管理，应用加载，启动，卸载，以及通信   |  体验良好，可无感知切换，子应用相互隔离   |  需要解决样式冲突、变量对象污染、通信机制等技术点   |
+
 </div>
 
 <style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent; 
-  -moz-text-fill-color: transparent;
-}
+  .title{
+    @apply text-fuchsia-700;
+  }
 </style>
+
+---
+
+# 微前端方案优势
+> 微前端是一种多个团队通过独立发布功能的方式来共同构建现代化 web 应用的技术手段及方法策略。-- Michael Geers 
+
+<br>
+
+<div class="grid grid-cols-4 gap-x-4">
+<div>
+<div class="title">
+
+* **技术解耦**
+</div>
+<br>
+<div class="content"><GoodTag class="mr-2"/>主框架不限制接入应用的技术栈，技术灵活；</div>
+</div>
+
+<div>
+<div class="title">
+
+* **独立开发、部署**
+</div>
+<br>
+<span class="content"><GoodTag class="mr-2"/>微应用仓库独立，前后端可独立开发；</span><br>
+</div>
+
+<div>
+<div class="title">
+
+* **增量升级**
+</div>
+<br>
+<span class="content"><GoodTag class="mr-2"/>复杂场景时，非常容易实施渐进式重构的手段和策略；</span>
+</div>
+
+<div>
+<div class="title">
+
+* **独立运行时**
+</div>
+<br>
+<span class="content"><GoodTag class="mr-2"/>每个微应用之间状态隔离，运行时状态不共享;</span>
+</div>
+
+</div>
+
+<img src="/img/micro_app.png" class="cotainer m-auto"/>
+
+
+<style>
+  .title{
+    @apply my-1 mx-5 text-red-700;
+  }
+  .content{
+    @apply leading-6;
+  }
+</style>
+
+---
+layout: two-cols
+---
+
+# 微前端核心设计理念
+> 微前端是一种类似微服务的架构，将微服务的理念应用到前端。
+
+<br>
+
+<span class="title">
+
+* 中心化路由-注册中心
+
+</span>
+
+<p class="content">
+注册中心：服务提供方要注册通告服务地址，服务的调用方要能发现目标服务。
+
+这点和 后端的微服务类似。
+
+我们需要在一个地方，统一维护路由和服务的对应关系。
+</p>
+
+::right::
+
+<div class="mt-10">
+<span class="title">
+
+* 分配一个路由给子应用：
+
+</span>
+
+```js
+// router.js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import MyPage from './my-page.vue'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/my-page/*',
+    name: 'my-page',
+    component: MyPage,
+  },
+]
+
+export default routes
+```
+</div>
+
+
+<style>
+  .title{
+    @apply my-1 mx-5 text-red-700;
+  }
+  .content{
+    @apply leading-6;
+  }
+</style>
+
+---
+layout: two-cols
+---
+
+# 微前端核心设计理念
+> 基座统一管理生命周期，触发相应的生命周期事件。
+
+<br>
+
+<span class="title">
+
+* 生命周期管理
+
+</span>
+
+<p class="content">
+微前端的中心服务称为：基座。
+
+基座需要控制服务的加载，卸载。这时候对于子服务而言，就涉及到子服务的应用的生命周期。
+
+一般需要包括以下功能：
+* 资源加载、渲染
+* 子应用挂载、卸载
+* 全局监听、事件更新
+
+</p>
+
+::right::
+
+<div class="mt-10">
+<span class="title">
+
+* **qiankun** 框架的生命周期管理：
+
+</span>
+
+```js
+// main.js
+/**
+ * bootstrap只会在微应用初始化时调用一次。通常做一些全局变量初始化。
+ */
+export async function bootstrap() {}
+
+/**
+ * 应用每次进入都会调用mount方法，通常会触发应用的渲染方法。
+ */
+export async function mount(props) {}
+
+/**
+ * 应用每次切出/卸载会调用的方法，通常会卸载微应用的应用实例。
+ */
+export async function unmount(props) {}
+
+/**
+ * 可选生命周期钩子，仅使用 loadMicroApp 方式加载微应用时生效。
+ */
+export async function update(props) {}
+```
+</div>
+
+
+<style>
+  .title{
+    @apply my-1 mx-5 text-red-700;
+  }
+  .content{
+    @apply leading-6;
+  }
+</style>
+
+---
+layout: two-cols
+---
+
+# 微前端核心设计理念
+> JS沙箱和样式隔离，确保子应用样式、全局变量、事件等不干扰。
+
+<br>
+
+<span class="title">
+
+* JS沙箱和样式隔离
+
+</span>
+
+<p class="content">
+
+<GoodTag class="mr-2"/> JS沙箱通过Proxy代理子应用的全局对象，防止应用之间全局变量的冲突，记录或清空子应用的全局副作用函数，也可以向子应用注入全局变量用于定制化处理。
+
+<GoodTag class="mr-2"/> 样式隔离是指对子应用的link和style元素的css内容进行格式化处理，确保子应用的样式只作用域自身，无法影响外部。
+
+</p>
+
+::right::
+
+<div class="mt-10">
+<span class="title">
+
+* **micro app** 应用隔离：
+
+</span>
+
+<img src="/img/micro_app_div.png" class="cotainer m-auto"/>
+
+<img src="/img/micro_app_subapp.png" class="cotainer m-auto"/>
+
+</div>
+
+
+<style>
+  .title{
+    @apply my-1 mx-5 text-red-700;
+  }
+  .content{
+    @apply leading-6;
+  }
+</style>
+
+
+---
+
+# 微前端技术选型
+
+<img src="/img/micro_app_compare.png" class="cotainer m-auto"/>
+
+---
+
+# 统一后台整体方案
+
+<img src="/img/union_app_view.png" class="cotainer m-auto"/>
 
 ---
 layout: center
 class: text-center
 ---
 
-# 建造高质量的应用
-## THANK YOU !
+# FAQ
 
+---
+layout: center
+class: text-center
+---
+
+## 感谢聆听 !
+
+# 💪 创造更高质量的应用
 ### 蜂泰科技 ｜ 徐健
 
 <style>

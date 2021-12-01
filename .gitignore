@@ -6,3 +6,14 @@ index.html
 .remote-assets
 components.d.ts
 slides-export.pdf
+slides-export/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+node_modules/.cache/
+**/node_modules
